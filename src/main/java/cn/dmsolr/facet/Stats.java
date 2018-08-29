@@ -20,7 +20,7 @@ public class Stats implements Facet {
 	}
 	
 	public static Stats sum(String name, String field) {
-		return new Stats(name, Func.avg, field);
+		return new Stats(name, Func.sum, field);
 	}
 
 	public String name() {

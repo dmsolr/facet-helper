@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -30,27 +31,32 @@ public abstract class JsonFacet implements Facet {
 		return RangeFacet.newRangeFacet(name, field);
 	}
 	
-	public static FieldFacet pivot(String... field) {
-		return null;
+	public static FieldFacet pivot(String... fields) {
+		if (fields.length < 1) return null;
+		
+		if (fields.length == 1) 
+			return newFieldFacet(fields[0], fields[0]);
+		
+		FieldFacet facet = newFieldFacet(fields[0], fields[0]);
+		FieldFacet sub = facet;
+		for (int idx=1; idx<fields.length; idx++) {
+			FieldFacet _sub = newFieldFacet(fields[idx], fields[idx]);
+			sub.facet(_sub);
+			sub = _sub;
+		}
+		return facet;
 	}
 	
 	public String toQueryString() {
-		if (!facets.isEmpty()) {
-			Map<String, Object> row = Maps.newHashMap();
-			for (Facet facet : facets) {
-				if (facet instanceof JsonFacet) {
-					JsonFacet jf = (JsonFacet) facet;
-					row.put(jf.name(), jf.params());
-				}
-				else if (facet instanceof Stats) {
-					Stats sf = (Stats) facet;
-					row.put(sf.name(), sf.params());
-				}
-			}
-			params.put("facet", row);
+		
+		StringBuilder builder = new StringBuilder("{").append(this.name).append(":");
+		
+		Map<String, Object> traversal = traversal();
+		for(Map.Entry<String, Object> e : traversal.entrySet()) {
 		}
+		
 		return new StringBuilder("{")
-				.append(this.name).append(":").append(JSONObject.toJSONString(params)).append("}").toString();
+				.append(this.name).append(":").append(JSONObject.toJSONString(traversal(), SerializerFeature.UseSingleQuotes)).append("}").toString();
 	}
 	
 	protected void put(String key, Object val) {
@@ -66,6 +72,24 @@ public abstract class JsonFacet implements Facet {
 	}
 	
 	public Object params() {
+		Map<String, Object> _sub = params;
+		
+		return params;
+	}
+	
+	Map<String, Object> traversal() {
+		Map<String, Object> map = Maps.newHashMap();
+		for (Facet f : this.facets) {
+			if (f instanceof JsonFacet) {
+				map.put(f.name(), ((JsonFacet) f).traversal());
+			}
+			else {
+				map.put(f.name(), f.params());
+			}
+		}
+		if (this.facets.isEmpty())
+			return params;
+		params.put("facet", map);
 		return params;
 	}
 	
