@@ -48,13 +48,6 @@ public abstract class JsonFacet implements Facet {
 	}
 	
 	public String toQueryString() {
-		
-		StringBuilder builder = new StringBuilder("{").append(this.name).append(":");
-		
-		Map<String, Object> traversal = traversal();
-		for(Map.Entry<String, Object> e : traversal.entrySet()) {
-		}
-		
 		return new StringBuilder("{")
 				.append(this.name).append(":").append(JSONObject.toJSONString(traversal(), SerializerFeature.UseSingleQuotes)).append("}").toString();
 	}
@@ -72,8 +65,6 @@ public abstract class JsonFacet implements Facet {
 	}
 	
 	public Object params() {
-		Map<String, Object> _sub = params;
-		
 		return params;
 	}
 	
