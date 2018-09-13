@@ -24,4 +24,6 @@ public class FieldFacet extends JsonFacet {
 	public FieldFacet missing(boolean missing) { put("missing", missing); return this; }
 	public FieldFacet numBuckets(boolean numBuckets) { put("numBuckets", numBuckets); return this; }
 	public FieldFacet allBuckets(boolean allBuckets) { put("allBuckets", allBuckets); return this; }
+	
+	public FieldFacet domain(String domain) { put("domain", domain); return this; }
 }
