@@ -23,6 +23,16 @@ public class FacetRequest extends SolrRequest<FacetResponse> {
 		params.add("json.facet", jFacet.toQueryString());
 		return this;
 	}
+
+	public FacetRequest setQuery(String query) {
+		params.set(CommonParams.Q, query);
+		return this;
+	}
+	
+	public FacetRequest addFilterQuery(String filter) {
+		params.add(CommonParams.FQ, filter);
+		return this;
+	}
 	
 	@Override
 	public SolrParams getParams() {

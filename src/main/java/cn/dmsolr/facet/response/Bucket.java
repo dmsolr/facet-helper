@@ -43,6 +43,7 @@ public class Bucket {
 		return TypeUtils.castToDouble(object);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Buckets getBuckets(String name) {
 		Object object = namedList.get(name);
 		if (object == null) { /* do what? */ }

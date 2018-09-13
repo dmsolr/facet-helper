@@ -4,6 +4,7 @@ import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.response.SolrResponseBase;
 import org.apache.solr.common.util.NamedList;
 
+@SuppressWarnings("unchecked")
 public class FacetResponse extends SolrResponseBase {
 	private static final long serialVersionUID = -7400234187034610444L;
 	private NamedList<Object> _facets = null;
@@ -13,7 +14,6 @@ public class FacetResponse extends SolrResponseBase {
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public void setResponse(NamedList<Object> response) {
 		super.setResponse(response);
 		Object facets = response.get("facets");
