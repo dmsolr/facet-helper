@@ -11,10 +11,6 @@ public class Stats implements Facet {
 		this.field = field;
 	}
 	
-	public static Stats newStats() {
-		return new Stats("", "", "");
-	}
-	
 	public static Stats avg(String name, String field) {
 		return new Stats(name, Func.avg, field);
 	}
@@ -22,7 +18,39 @@ public class Stats implements Facet {
 	public static Stats sum(String name, String field) {
 		return new Stats(name, Func.sum, field);
 	}
-
+	
+	public static Stats max(String name, String field) {
+		return new Stats(name, Func.max, field);
+	}
+	
+	public static Stats min(String name, String field) {
+		return new Stats(name, Func.min, field);
+	}
+	
+	public static Stats unique(String name, String field) {
+		return new Stats(name, Func.unique, field);
+	}
+	
+	public static Stats hll(String name, String field) {
+		return new Stats(name, Func.hll, field);
+	}
+	
+	public static Stats percentile(String name, String field) {
+		return new Stats(name, Func.percentile, field);
+	}
+	
+	public static Stats sumsq(String name, String field) {
+		return new Stats(name, Func.sumsq, field);
+	}
+	
+	public static Stats stddev(String name, String field) {
+		return new Stats(name, Func.stddev, field);
+	}
+	
+	public static Stats agg(String name, String func, String field) {
+		return new Stats(name, func, field);
+	}
+	
 	public String name() {
 		return name;
 	}
@@ -44,8 +72,4 @@ public class Stats implements Facet {
 		return null;
 	}
 	
-//	@Override
-//	public String toQueryString() {
-//		return "facet:{" + String.valueOf(params()) + "}";
-//	}
 }
