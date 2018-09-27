@@ -27,6 +27,10 @@ public abstract class JsonFacet implements Facet {
 		return QueryFacet.newQueryFacet(name);
 	}
 	
+	public static QueryFacet newQueryFacet(String name, String query) {
+		return QueryFacet.newQueryFacet(name, query);
+	}
+	
 	public static RangeFacet newRangeFacet(String name, String field) {
 		return RangeFacet.newRangeFacet(name, field);
 	}
