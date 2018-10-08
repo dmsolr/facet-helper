@@ -3,8 +3,8 @@ package cn.dmsolr.facet;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.noggit.JSONUtil;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -52,8 +52,12 @@ public abstract class JsonFacet implements Facet {
 	}
 	
 	public String toQueryString() {
+		return toQueryString(-1);
+	}
+	
+	public String toQueryString(int indent) {
 		return new StringBuilder("{")
-				.append(this.name).append(":").append(JSONObject.toJSONString(traversal(), SerializerFeature.UseSingleQuotes)).append("}").toString();
+				.append(this.name).append(":").append(JSONUtil.toJSON(traversal(), indent)).append("}").toString();
 	}
 	
 	protected void put(String key, Object val) {

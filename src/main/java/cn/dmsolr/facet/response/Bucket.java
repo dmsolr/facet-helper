@@ -1,8 +1,8 @@
 package cn.dmsolr.facet.response;
 
-import org.apache.solr.common.util.NamedList;
+import java.math.BigDecimal;
 
-import com.alibaba.fastjson.util.TypeUtils;
+import org.apache.solr.common.util.NamedList;
 
 public class Bucket {
 	private final NamedList<Object> namedList;
@@ -12,7 +12,7 @@ public class Bucket {
 	public Bucket(NamedList<Object> namedList) {
 		this.namedList = namedList;
 		this.val = ((String) namedList.get("val"));
-		this.count = TypeUtils.castToInt(namedList.get("count"));
+		this.count = getInt("count");
 	}
 
 	public long getCount() {
@@ -25,24 +25,65 @@ public class Bucket {
 	
 	public String getString(String name) {
 		Object object = namedList.get(name);
-		return TypeUtils.castToString(object);
+		if (object == null)
+			return null;
+		if (object instanceof String) 
+			return (String) object;
+		return String.valueOf(object);
 	}
 	
-	public long getLong(String name) {
-		Object object = namedList.get(name);
-		return TypeUtils.castToLong(object);
+	public Long getLong(String name) {
+		Object value = namedList.get(name);
+		if(value == null){
+            return null;
+        }
+
+        if(value instanceof BigDecimal){
+        	return ((BigDecimal) value).longValue();
+        }
+
+        if(value instanceof Number){
+            return ((Number) value).longValue();
+        }
+        
+		return Long.parseLong((String) value);
 	}
 	
-	public int getInt(String name) {
-		Object object = namedList.get(name);
-		return TypeUtils.castToInt(object);
+	public Integer getInt(String name) {
+		Object value = namedList.get(name);
+		if(value == null){
+            return null;
+        }
+
+        if(value instanceof BigDecimal){
+            return ((BigDecimal) value).intValue();
+        }
+
+        if(value instanceof Number){
+            return ((Number) value).intValue();
+        }
+        
+		return Integer.parseInt((String) value);
 	}
 	
-	public double getDouble(String name) {
-		Object object = namedList.get(name);
-		return TypeUtils.castToDouble(object);
+	public Double getDouble(String name) {
+		Object value = namedList.get(name);
+		if(value == null){
+            return null;
+        }
+
+        if(value instanceof BigDecimal){
+        	return ((BigDecimal) value).doubleValue();
+        }
+
+        if(value instanceof Number){
+            return ((Number) value).doubleValue();
+        }
+        
+		return Double.parseDouble((String) value);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Buckets getBuckets(String name) {
 		Object object = namedList.get(name);
 		if (object == null) { /* do what? */ }
